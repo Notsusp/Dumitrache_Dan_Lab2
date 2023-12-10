@@ -4,6 +4,7 @@ using Dumitrache_Dan_Lab2.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dumitrache_Dan_Lab2.Migrations
 {
     [DbContext(typeof(Dumitrache_Dan_Lab2Context))]
-    partial class Dumitrache_Dan_Lab2ContextModelSnapshot : ModelSnapshot
+    [Migration("20231210154735_ColdWarLab4")]
+    partial class ColdWarLab4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +57,6 @@ namespace Dumitrache_Dan_Lab2.Migrations
                     b.Property<int?>("AuthorID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryID")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(6, 2)");
 
@@ -73,8 +73,6 @@ namespace Dumitrache_Dan_Lab2.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AuthorID");
-
-                    b.HasIndex("CategoryID");
 
                     b.HasIndex("PublisherID");
 
@@ -144,10 +142,6 @@ namespace Dumitrache_Dan_Lab2.Migrations
                         .WithMany("Books")
                         .HasForeignKey("AuthorID");
 
-                    b.HasOne("Dumitrache_Dan_Lab2.Models.Category", null)
-                        .WithMany("Books")
-                        .HasForeignKey("CategoryID");
-
                     b.HasOne("Dumitrache_Dan_Lab2.Models.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherID");
@@ -189,8 +183,6 @@ namespace Dumitrache_Dan_Lab2.Migrations
             modelBuilder.Entity("Dumitrache_Dan_Lab2.Models.Category", b =>
                 {
                     b.Navigation("BookCategories");
-
-                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Dumitrache_Dan_Lab2.Models.Publisher", b =>

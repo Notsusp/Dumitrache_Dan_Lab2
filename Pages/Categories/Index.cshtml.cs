@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Dumitrache_Dan_Lab2.Data;
 using Dumitrache_Dan_Lab2.Models;
+using Dumitrache_Dan_Lab2.Models.ViewModels;
 
 namespace Dumitrache_Dan_Lab2.Pages.Categories
 {
@@ -19,11 +20,26 @@ namespace Dumitrache_Dan_Lab2.Pages.Categories
             _context = context;
         }
 
-        public IList<Category> Category { get;set; } = default!;
+        public IList<Category> Category { get; set; } = default!;
+        public CategoryIndexData CategoryData { get; set; }
+        public int CategoryID { get; set; }
+        public int BookID { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(int? id, int? bookID)
         {
-            Category = await _context.Category.ToListAsync();
+            CategoryData = new CategoryIndexData();
+            CategoryData.Categories = await _context.Category
+            .Include(i => i.Books)
+            .ThenInclude(c => c.Author)
+            .ToListAsync();
+
+            if (id != null)
+            {
+                CategoryID = id.Value;
+                Category category = CategoryData.Categories
+                .Where(i => i.ID == id.Value).Single();
+                CategoryData.Books = category.Books;
+            }
         }
     }
 }
